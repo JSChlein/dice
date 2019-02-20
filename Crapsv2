@@ -1,1 +1,112 @@
+package dicegames;
+
+import java.util.Scanner;
+
+public class CrapsPlay {
+	
+	private Die die1;
+	private Die die2;
+	private boolean result = false;
+	private boolean isComeOutRoll = true;
+	private int comeOutRoll;
+	private int roll;
+	
+	private Scanner scan;
+	
+	public CrapsPlay()
+	{
+		die1 = new Die();
+		die2 = new Die();
+		
+		scan = new Scanner(System.in);
+	}
+	
+	public void welcomeToGame()
+	{
+		System.out.println("*Velkommen til spillet Craps*");
+		System.out.println("*Indtast dankortnummer og pinkode for at fortsætte*");
+		System.out.println("Reglerne er som følgende:");
+		System.out.println("Der slås med to terninger");
+		System.out.println("Slår du 7 eller 11 i først slag så vinder du");
+		System.out.println("Slår du derimod 2,3 eller 12 så taber du");
+		System.out.println("Slår du et andet vilkårligt tal, så er dette dit \"Come out roll\"");
+		System.out.println("Herefter skal du forsøge at slå det igen.");
+		System.out.println("Evner du at gøre dette uden at slå en 7'er inden, vinder du \n");
+		System.out.println("Hvis du er klar tast \"kast\"");
+	}
+	
+	public void gameOver()
+	{
+		if(result)
+		{
+			System.out.println("Du slog " + roll);
+			System.out.println("Tilykke du vandt!");
+		}
+		else
+		{
+			System.out.println("Du slog " + roll);
+			System.out.println("Tilykke du tabte!");
+		}
+		scan.close();
+	}
+	
+	public void takeTurn()
+	{
+		die1.roll();
+		die2.roll();
+		roll = die1.getFaceValue()+die2.getFaceValue();
+		
+		if (isComeOutRoll)
+		{
+			if (roll == 7 || roll == 11) {
+				result = true;
+				gameOver();
+			} else if (roll == 2 || roll == 3 || roll == 12) {
+				result = false;
+				gameOver();
+			} else {
+				isComeOutRoll = false;
+				comeOutRoll = roll;
+			} 
+		}
+		else
+		{
+			if (roll == comeOutRoll)
+			{
+				result = true;
+				gameOver();
+			}
+			else if (roll == 7)
+			{
+				result = false;
+				gameOver();
+			}
+			else
+			{
+				System.out.println("Du slog" + roll);
+				startGame();
+			}
+		}
+	}
+	
+	public void startGame()
+	{
+		if (isComeOutRoll)
+		{
+			welcomeToGame();
+		}
+		else
+		{
+			System.out.println("Tast \"kast\" for forsætte");
+		}
+		String goOn = scan.nextLine();
+		if (goOn.equalsIgnoreCase("kast")) {
+			takeTurn();
+		} else {
+			startGame();
+		}
+				
+	}
+
+}
 
