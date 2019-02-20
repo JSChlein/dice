@@ -1,0 +1,32 @@
+package dicegames;
+
+import java.util.Scanner;
+
+public class CrapsPlay {
+	
+	private Die die1;
+	private Die die2;
+	
+	private Scanner scan;
+	
+	public CrapsPlay() {
+		die1 = new Die(6);
+		die1 = new Die(6);
+		
+		scan = new Scanner(System.in);
+	}
+	
+	public void welcomeToGame() {
+		System.out.println("*Velkommen til spillet Craps*");
+		System.out.println("*Indtast dankortnummer og pinkode for at fortsætte*");
+		System.out.println("Reglerne er som følgende:");
+		System.out.println("Der slås med to terninger");
+		System.out.println("Slår du 7 eller 11 i først slag så vinder du");
+		System.out.println("Slår du derimod 2,3 eller 12 så taber du");
+		System.out.println("Slår du et andet vilkårligt tal, så er dette dit \"Come out roll\"");
+		System.out.println("Herefter skal du forsøge at slå det igen.");
+		System.out.println("Evner du at gøre dette uden at slå en 7'er inden, vinder du");
+		
+	}
+	
+}
