@@ -1,1 +1,164 @@
+package dicegames;
+
+import java.util.Scanner;
+
+public class PigPlay {
+	
+	private Die die;
+	
+	private boolean isPlayer1Turn = true;
+	private boolean finished = false;
+	private boolean isNamed = false;
+	
+	private Scanner scan;
+	
+	private int turnSum = 0;
+	private int p1Sum = 0;
+	private int p2Sum = 0;
+	
+	private int goal = 100;
+	
+	private String p1Name = "Spiller 1";
+	private String p2Name = "Spiller 2";
+	
+	public PigPlay()
+	{
+		die = new Die();
+		
+		scan = new Scanner(System.in);
+	}
+	
+	public void welcomeToGame()
+	{
+		System.out.println("*Velkommen til spillet Pig*");
+		System.out.println("Reglerne er som følgende:");
+		System.out.println("Der er to spillere en terning");
+		System.out.println("Spiller 1 starter med at slå");
+		System.out.println("For hvert slag tælles øjnene sammen");
+		System.out.println("Spiller 1's runde forsætter indtil han/hun vælger at stoppe eller der bliver slået 1");
+		System.out.println("Hvis der bliver slået 1 mister man alle point for runden");
+		System.out.println("Hvis spilleren vælger at stoppe blive hans point for runden talt sammen med hans samlet sum");
+		System.out.println("Det er så Spiller 2's tur");
+		System.out.println("Spillet forsætter indtil en spiller har nået det aftalte antal point \n");
+	}
+	
+	public void takeTurn()
+	{
+		while (!finished)
+		{
+			die.roll();
+			int roll = die.getFaceValue();
+			
+			if (roll == 1)
+			{
+				System.out.println("Du slog 1. Du får ingen point denne runde \n");
+				if (isPlayer1Turn)
+				{
+					isPlayer1Turn = false;
+				}
+				else
+				{
+					isPlayer1Turn = true;
+				}
+				turnSum = 0;
+				finished = true;
+			}	
+			else
+			{
+				/**
+				 * First "if" and "else if" stops game automatically if a player has reached
+				 * the goal
+				 */
+				turnSum += roll;
+				if (isPlayer1Turn && p1Sum + turnSum >= goal)
+				{
+					p1Sum += turnSum;
+					System.out.println("Du slog " + roll + "\n");
+					finished = true;
+				}
+				else if (!isPlayer1Turn && p2Sum + turnSum >= goal)
+				{
+					p2Sum += turnSum;
+					System.out.println("Du slog " + roll + "\n");
+					finished = true;
+				}
+				else
+				{
+					System.out.println("Du slog " + roll);
+					System.out.println("Du har optjent " + turnSum + " point denne runde. Ønsker du at stoppe tast \"stop\"");
+					String goOn = scan.next();
+					if (goOn.equalsIgnoreCase("stop"))
+					{
+						if (isPlayer1Turn)
+						{
+							p1Sum += turnSum;
+						}
+						else
+						{
+							p2Sum += turnSum;
+						}
+						turnSum = 0;
+						finished = true;
+					}
+				}
+			}
+		}
+		System.out.println("\n" + p1Name + " har " + p1Sum + " point og " + p2Name + " har " + p2Sum + " point.\n");
+	}
+	
+	public void startGame()
+	{
+		if (!isNamed)
+		{
+			welcomeToGame();
+			
+			System.out.println("Skriv Spiller 1's navn");
+			p1Name = scan.nextLine();
+			if (p1Name.equals(""))
+			{
+				p1Name = "Spiller 1";
+			}
+			System.out.println("Skriv Spiller 2's navn");
+			p2Name = scan.nextLine();
+			if (p2Name.equals(""))
+			{
+				p2Name = "Spiller 2";
+			}
+			System.out.println("Hvad skal der spilles til?");
+			goal = scan.nextInt();
+			isNamed = true;
+		}
+
+		while (p1Sum < goal && p2Sum < goal)
+		{
+			finished = false;
+			if (isPlayer1Turn)
+			{
+				System.out.println(p1Name + "'s tur");
+				takeTurn();
+				isPlayer1Turn = false;
+			}
+			else
+			{
+				System.out.println(p2Name + "'s tur");
+				takeTurn();
+				isPlayer1Turn = true;
+			}
+		}
+		gameOver();
+	}
+	
+	public void gameOver()
+	{
+		if (p1Sum >= goal)
+		{
+			System.out.println(p1Name + " vandt!");
+		}
+		else
+		{
+			System.out.println(p2Name + " vandt!");
+		}
+		scan.close();
+	}
+}
 
