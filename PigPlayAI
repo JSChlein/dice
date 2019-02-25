@@ -137,8 +137,8 @@ public class PigPlay {
 						} else {
 							System.out.println("Computeren slog " + roll);
 							System.out.println("Den har nu " + turnSum );
-							int choice = (int)((Math.random()*3));
-							if(choice == 1) {
+							int choice = (int)((Math.random()*101));
+							if (!(choice < 40) && !(choice > 60)) {
 								p2Sum += turnSum;
 								turnSum = 0;
 								finished = true;
