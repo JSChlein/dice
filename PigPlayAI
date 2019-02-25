@@ -18,6 +18,8 @@ public class PigPlay {
 	
 	private int p1Turns = 0;
 	private int p2Turns = 0;
+	private int p1Throws = 0;
+	private int p2Throws = 0;
 	
 	private int goal = 100;
 	
@@ -124,6 +126,7 @@ public class PigPlay {
 						if(isPlayer1Turn) {
 							System.out.println("Du slog " + roll);
 							System.out.println("Du har optjent " + turnSum + " point denne runde. Ønsker du at stoppe tast \"stop\"");
+							System.out.println("Hvis du ønsker at forsætte: tast noget vilkårligt");
 						
 							String goOn = scan.next();
 							if (goOn.equalsIgnoreCase("stop")) {
@@ -166,15 +169,14 @@ public class PigPlay {
 			}
 			System.out.println("Skriv Spiller 1's navn");
 			p1Name = scan.next();
-			if (p1Name.equals(""))
+			if (isTwoPlayer)
 			{
-				p1Name = "Spiller 1";
+				System.out.println("Skriv Spiller 2's navn");
+				p2Name = scan.next();
 			}
-			System.out.println("Skriv Spiller 2's navn");
-			p2Name = scan.next();
-			if (p2Name.equals(""))
+			else
 			{
-				p2Name = "Spiller 2";
+				p2Name = "CPU";
 			}
 			System.out.println("Hvad skal der spilles til?");
 			goal = scan.nextInt();
@@ -188,6 +190,7 @@ public class PigPlay {
 				System.out.println("Skriv \"Kast\" for at fortsætte ");
 				scan.next();
 				takeTurn();
+				p1Turns++;
 				isPlayer1Turn = false;
 			}
 			else
@@ -203,7 +206,7 @@ public class PigPlay {
 					isPlayer1Turn = true;
 
 				}
-				
+				p2Turns++;			
 			}
 		}
 		gameOver();
